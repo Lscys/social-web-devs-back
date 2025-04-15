@@ -3,6 +3,8 @@ package git.red.com.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,8 +20,6 @@ public class Release {
 
     private String description;
 
-    private String img;
-
     @ManyToMany
     @JoinTable(
             name = "release_technologies",
@@ -32,6 +32,50 @@ public class Release {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    private PostStats postStats;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostLike> likes;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+
+    public PostStats getPostStats() {
+        return postStats;
+    }
+
+    public void setPostStats(PostStats postStats) {
+        this.postStats = postStats;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<PostLike> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<PostLike> likes) {
+        this.likes = likes;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Integer getIdrelease() {
         return idrelease;
@@ -57,13 +101,7 @@ public class Release {
         this.description = description;
     }
 
-    public String getImg() {
-        return img;
-    }
 
-    public void setImg(String img) {
-        this.img = img;
-    }
 
     public Set<Technologies> getTechnologies() {
         return technologies;

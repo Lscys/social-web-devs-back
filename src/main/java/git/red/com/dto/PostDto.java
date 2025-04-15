@@ -4,36 +4,16 @@ import git.red.com.models.Technologies;
 import git.red.com.models.User;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
 public class PostDto {
-
     private String title;
-
     private String description;
-
-    private String img;
-
-    private User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    private Set<Technologies> technologies;
-
-    public Set<Technologies> getTechnologies() {
-        return technologies;
-    }
-
-    public void setTechnologies(Set<Technologies> technologies) {
-        this.technologies = technologies;
-    }
+    private List<Integer> technologiesIds; // IDs de tecnologías seleccionadas
+    private Integer userId;                // ID del usuario que postea
+    private String imageUrl;           // Imagen del post
 
     public String getTitle() {
         return title;
@@ -51,11 +31,27 @@ public class PostDto {
         this.description = description;
     }
 
-    public String getImg() {
-        return img;
+    public List<Integer> getTechnologiesIds() {
+        return technologiesIds;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setTechnologiesIds(List<Integer> technologiesIds) {
+        this.technologiesIds = technologiesIds;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
