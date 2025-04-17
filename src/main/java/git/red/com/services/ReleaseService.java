@@ -52,7 +52,11 @@ public class ReleaseService {
         PostStats stats = new PostStats();
         stats.setImageUrl(postDto.getImageUrl());
         stats.setPost(rea); // Relación bidireccional
+        stats.setStarred(false);
+        stats.setLikesCount(0);
         rea.setPostStats(stats);
+
+
 
         return releaseRepository.save(rea);
 
