@@ -5,6 +5,7 @@ import git.red.com.models.PostStats;
 import git.red.com.models.Release;
 import git.red.com.models.Technologies;
 import git.red.com.models.User;
+import git.red.com.repository.LikeRepository;
 import git.red.com.repository.ReleaseRepository;
 import git.red.com.repository.TechnologiesRepository;
 import git.red.com.repository.UserRepository;
@@ -29,10 +30,14 @@ public class ReleaseService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LikeRepository likeRepository;
+
 
     public List<Release> getAllRelease () {
         return releaseRepository.findAll();
     }
+
 
     public Release createRelease (PostDto postDto) {
 

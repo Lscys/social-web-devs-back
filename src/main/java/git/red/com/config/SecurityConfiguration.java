@@ -46,6 +46,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/technologies/all").permitAll()
                         .requestMatchers("/post/all").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/reaction/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
