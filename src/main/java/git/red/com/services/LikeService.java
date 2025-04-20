@@ -1,15 +1,15 @@
 package git.red.com.services;
 
 import git.red.com.dto.LikeMessageDto;
-import git.red.com.models.PostLike;
-import git.red.com.models.PostStats;
-import git.red.com.models.Release;
-import git.red.com.models.User;
+import git.red.com.models.*;
 import git.red.com.repository.LikeRepository;
+import git.red.com.repository.NotificationRepository;
 import git.red.com.repository.ReleaseRepository;
 import git.red.com.repository.UserRepository;
 import git.red.com.response.LikeResponse;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class LikeService {
@@ -17,11 +17,13 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final ReleaseRepository releaseRepository;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
-    public LikeService(LikeRepository likeRepository, ReleaseRepository releaseRepository, UserRepository userRepository) {
+    public LikeService(LikeRepository likeRepository, ReleaseRepository releaseRepository, UserRepository userRepository, NotificationRepository notificationRepository) {
         this.likeRepository = likeRepository;
         this.releaseRepository = releaseRepository;
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     public LikeResponse registerLike(LikeMessageDto message) {
@@ -51,9 +53,18 @@ public class LikeService {
         // Actualizar y guardar el PostStats
         PostStats stats = post.getPostStats();
         stats.setLikesCount(totalLikes);
-
         // Guardar el Release, que a su vez guarda el PostStats
         releaseRepository.save(post); // Cascade debería guardar stats también
+
+        // Crear notificación solo si el usuario que da like es diferente al dueño del post
+        if (!user.getIduser().equals(post.getUser().getIduser())) {
+            Notification notification = new Notification();
+            notification.setUser(post.getUser()); // dueño del post
+            notification.setTitle("¡Nuevo like!");
+            notification.setMessage(user.getName() + " le dio like a tu publicación \"" + post.getTitle() + "\"");
+            notification.setCreatedAt(LocalDateTime.now());
+            notificationRepository.save(notification);
+        }
 
         return new LikeResponse(message.getPostId(), message.getUserId(), totalLikes, message.getAction());
     }
@@ -84,6 +95,8 @@ public class LikeService {
 
         return new LikeResponse(message.getPostId(), message.getUserId(), totalLikes, message.getAction());
     }
+
+
 
 
 }
