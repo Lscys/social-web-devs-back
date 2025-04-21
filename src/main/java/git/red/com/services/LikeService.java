@@ -61,7 +61,7 @@ public class LikeService {
             Notification notification = new Notification();
             notification.setUser(post.getUser()); // dueño del post
             notification.setTitle("¡Nuevo like!");
-            notification.setMessage(user.getName() + " le dio like a tu publicación \"" + post.getTitle() + "\"");
+            notification.setMessage(user.getName()+" "+ user.getLast_name() +" le dio like a tu publicación \"" + post.getTitle() + "\"");
             notification.setCreatedAt(LocalDateTime.now());
             notificationRepository.save(notification);
         }
