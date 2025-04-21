@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReleaseRepository extends JpaRepository<Release, Integer> {
-    Release save(PostDto postDto);
+
 }

@@ -6,6 +6,10 @@ import git.red.com.models.Release;
 import git.red.com.models.User;
 import git.red.com.services.ReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +28,11 @@ public class ReleaseController {
     }
 
     @GetMapping("/all")
-    private List<Release> listAllPosts () {
-        return releaseService.getAllRelease();
+    private Page<Release> listAllPosts (@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        return releaseService.getAllRelease(pageable);
     }
 
 
