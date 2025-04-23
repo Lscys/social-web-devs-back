@@ -40,7 +40,6 @@ public class ReleaseService {
         return releaseRepository.findAll(pageable);
     }
 
-
     public Release createRelease (PostDto postDto) {
 
         User user = userRepository.findById(postDto.getUserId())
@@ -63,10 +62,42 @@ public class ReleaseService {
         stats.setLikesCount(0);
         rea.setPostStats(stats);
 
-
-
         return releaseRepository.save(rea);
-
     }
+
+    @Transactional
+    public void deleteRelease(Integer idrelease, Integer userId) {
+        Release release = releaseRepository.findById(idrelease)
+                .orElseThrow(() -> new RuntimeException("El post no existe con id: " + idrelease));
+
+        if (!release.getUser().getIduser().equals(userId)) {
+            throw new RuntimeException("No tienes permiso para eliminar este post");
+        }
+
+        releaseRepository.delete(release);
+    }
+
+    @Transactional
+    public Release updateRelease(Integer idrelease, PostDto postDto) {
+        Release release = releaseRepository.findById(idrelease)
+                .orElseThrow(() -> new RuntimeException("Post no encontrado"));
+
+        release.setTitle(postDto.getTitle());
+        release.setDescription(postDto.getDescription());
+
+        // Actualizar tecnologías
+        Set<Technologies> technologiesSet = new HashSet<>(
+                technologiesRepository.findAllById(postDto.getTechnologiesIds())
+        );
+        release.setTechnologies(technologiesSet);
+
+        // Actualizar imagen (en PostStats)
+        if (release.getPostStats() != null) {
+            release.getPostStats().setImageUrl(postDto.getImageUrl());
+        }
+
+        return releaseRepository.save(release);
+    }
+
 
 }

@@ -35,5 +35,18 @@ public class ReleaseController {
         return releaseService.getAllRelease(pageable);
     }
 
+    @PutMapping("/update/{idrelease}")
+    public ResponseEntity<Release> updatePost(@PathVariable Integer idrelease, @RequestBody PostDto postDto) {
+        Release updated = releaseService.updateRelease(idrelease, postDto);
+        return ResponseEntity.ok(updated);
+    }
+
+
+    @DeleteMapping("/delete/{idrelease}")
+    public ResponseEntity<?> deletePost(@PathVariable Integer idrelease, @RequestParam Integer userId) {
+        releaseService.deleteRelease(idrelease, userId);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
