@@ -7,6 +7,8 @@ import git.red.com.repository.NotificationRepository;
 import git.red.com.repository.ReleaseRepository;
 import git.red.com.repository.UserRepository;
 import git.red.com.response.LikeResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -64,6 +66,7 @@ public class LikeService {
             notification.setMessage(user.getName()+" "+ user.getLast_name() +" le dio like a tu publicación \"" + post.getTitle() + "\"");
             notification.setCreatedAt(LocalDateTime.now());
             notificationRepository.save(notification);
+
         }
 
         return new LikeResponse(message.getPostId(), message.getUserId(), totalLikes, message.getAction());

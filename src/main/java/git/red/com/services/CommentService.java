@@ -1,6 +1,7 @@
 package git.red.com.services;
 
 import git.red.com.dto.CommentDto;
+import git.red.com.dto.UpdateCommentDto;
 import git.red.com.models.Comment;
 import git.red.com.models.Notification;
 import git.red.com.models.Release;
@@ -62,5 +63,32 @@ public class CommentService {
     public List<Comment> getCommentsByPost(Long postId) {
         return commentRepository.findByPost_Idrelease(postId);
     }
+
+    public Comment updateComment(UpdateCommentDto request) {
+        Comment comment = commentRepository.findById(request.getCommentId())
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!comment.getUser().getIduser().equals(request.getUserId())) {
+            throw new RuntimeException("You are not authorized to edit this comment");
+        }
+
+        comment.setContent(request.getContent());
+        comment.setCreatedAt(LocalDateTime.now());
+
+        return commentRepository.save(comment);
+    }
+
+    public void deleteComment(Long commentId, Integer userId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!comment.getUser().getIduser().equals(userId)) {
+            throw new RuntimeException("You are not authorized to delete this comment");
+        }
+
+        commentRepository.delete(comment);
+    }
+
+
 
 }
