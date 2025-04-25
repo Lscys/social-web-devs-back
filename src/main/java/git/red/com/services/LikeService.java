@@ -29,8 +29,6 @@ public class LikeService {
     }
 
     public LikeResponse registerLike(LikeMessageDto message) {
-
-        // Buscar las entidades completas
         Release post = releaseRepository.findById(message.getPostId())
                 .orElseThrow(() -> new RuntimeException("Post no encontrado"));
 

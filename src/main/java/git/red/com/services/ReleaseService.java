@@ -9,6 +9,8 @@ import git.red.com.repository.LikeRepository;
 import git.red.com.repository.ReleaseRepository;
 import git.red.com.repository.TechnologiesRepository;
 import git.red.com.repository.UserRepository;
+import git.red.com.response.PostResponseDto;
+import git.red.com.response.UserResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,8 +38,9 @@ public class ReleaseService {
     private LikeRepository likeRepository;
 
 
-    public Page<Release> getAllRelease (Pageable pageable) {
-        return releaseRepository.findAll(pageable);
+    public Page<PostResponseDto> getAllRelease (Pageable pageable) {
+
+        return releaseRepository.findAll(pageable).map(PostResponseDto::new);
     }
 
     public Release createRelease (PostDto postDto) {

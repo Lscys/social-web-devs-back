@@ -1,31 +1,44 @@
 package git.red.com.response;
 
-import git.red.com.models.Technologies;
-import git.red.com.models.User;
+import git.red.com.models.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
 public class PostResponseDto {
 
-    private Integer id;
+    private Integer idrelease;
     private String title;
     private String description;
     private Set<Technologies> technologies;
-    private User user;
-    private int likesCount;
-    private boolean likedByUser;
-    private String imageUrl;
+    private UserResponse user;
+    private PostStats postStats;
+    private List<Comment> comments;
+    private List<PostLike> likes;
     private LocalDateTime createdAt;
 
-    public Integer getId() {
-        return id;
+    public PostResponseDto(Release release) {
+        this.idrelease = release.getIdrelease();
+        this.title = release.getTitle();
+        this.description = release.getDescription();
+        this.technologies = release.getTechnologies();
+        User userEntity = release.getUser();
+        this.user = new UserResponse(userEntity.getIduser(), userEntity.getName(), userEntity.getLast_name(), userEntity.getImage());
+        this.postStats = release.getPostStats();
+        this.comments = release.getComments();
+        this.likes = release.getLikes();
+        this.createdAt = release.getCreatedAt();
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getIdrelease() {
+        return idrelease;
+    }
+
+    public void setIdrelease(Integer idrelease) {
+        this.idrelease = idrelease;
     }
 
     public String getTitle() {
@@ -52,36 +65,36 @@ public class PostResponseDto {
         this.technologies = technologies;
     }
 
-    public User getUser() {
+    public UserResponse getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserResponse user) {
         this.user = user;
     }
 
-    public int getLikesCount() {
-        return likesCount;
+    public PostStats getPostStats() {
+        return postStats;
     }
 
-    public void setLikesCount(int likesCount) {
-        this.likesCount = likesCount;
+    public void setPostStats(PostStats postStats) {
+        this.postStats = postStats;
     }
 
-    public boolean isLikedByUser() {
-        return likedByUser;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setLikedByUser(boolean likedByUser) {
-        this.likedByUser = likedByUser;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public List<PostLike> getLikes() {
+        return likes;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setLikes(List<PostLike> likes) {
+        this.likes = likes;
     }
 
     public LocalDateTime getCreatedAt() {

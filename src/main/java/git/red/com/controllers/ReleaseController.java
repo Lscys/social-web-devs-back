@@ -4,6 +4,7 @@ import git.red.com.dto.PostDto;
 import git.red.com.dto.UserDto;
 import git.red.com.models.Release;
 import git.red.com.models.User;
+import git.red.com.response.PostResponseDto;
 import git.red.com.services.ReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +29,8 @@ public class ReleaseController {
     }
 
     @GetMapping("/all")
-    private Page<Release> listAllPosts (@RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "10") int size) {
+    private Page<PostResponseDto> listAllPosts (@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         return releaseService.getAllRelease(pageable);
